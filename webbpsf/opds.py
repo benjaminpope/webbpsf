@@ -36,11 +36,14 @@ import astropy.table
 import astropy.io.fits as fits
 import astropy.units as u
 import logging
+from copy import deepcopy
+from scipy import io
 
 import poppy
 import poppy.zernike as zernike
 from . import constants
 from . import utils
+from . import optics
 
 _log = logging.getLogger('webbpsf')
 
@@ -2332,9 +2335,6 @@ def test2_OPDbender(filename='OPD_RevV_nircam_132.fits'):
 
 #-------------------------------------------------------------------------------
 # Thermal
-from copy import deepcopy
-from . import optics
-from scipy import io
 
 
 class OteThermalModel(object):
