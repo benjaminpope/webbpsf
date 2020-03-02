@@ -1695,14 +1695,14 @@ class LookupTableFieldDependentAberration(poppy.OpticalElement):
         # Figure out the closest field point
 
         telcoords_am = self.tel_coords.to(units.arcmin).value
-        print(f"Requested field point has coord {telcoords_am}")
+        print("Requested field point has coord {telcoords_am}".format(telcoords_am=telcoords_am))
         v2 = self.table['V2']
 
         v3 = self.table['V3']
         r = np.sqrt((telcoords_am[0] - v2) ** 2 + (telcoords_am[1] - v3) ** 2)
         closest = np.argmin(r)   # if there are two field points with identical coords or equal distance just one is returned
 
-        print(f"Closest field point is row {closest}: {self.table[closest]} ")
+        print("Closest field point is row {}: {} ".format(closest, self.table[closest]))
 
         # Save closest ISIM CV3 WFE measured field point for reference
         self.row = self.table[closest]
@@ -1750,7 +1750,7 @@ class LookupTableFieldDependentAberration(poppy.OpticalElement):
                 coeffs = poppy.zernike.opd_expand_nonorthonormal(self.opd, aperture=apmask, nterms=3)
             ptt_only = poppy.zernike.opd_from_zernikes(coeffs, aperture=apmask, npix=self.opd.shape[0], outside=0)
             self.opd -= ptt_only
-            print(f"Removing piston, tip, tilt from the input wavefront. Coeffs for  {self.instr_name}: {coeffs},")
+            print("Removing piston, tip, tilt from the input wavefront. Coeffs for  {}: {},".format(self.instr_name, coeffs))
 
         if add_mimf_defocus:
             self.instrument.options['defocus_waves'] = 0.8
@@ -1770,7 +1770,7 @@ class LookupTableFieldDependentAberration(poppy.OpticalElement):
         from collections import OrderedDict
         keywords = OrderedDict()
         keywords['SIWFETYP'] = self.si_wfe_type
-        keywords['SIWFEFPT'] = ( f"{self.row['V2']:.3f}, {self.row['V3']:.3f}", "Closest lookup table meas. field point")
+        keywords['SIWFEFPT'] = ( "{:.3f}, {:.3f}".format(self.row['V2'], self.row['V3'], "Closest lookup table meas. field point"))
         return keywords
 
     # wrapper just to change default vmax
